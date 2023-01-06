@@ -1,0 +1,333 @@
+// 1 => 6
+@use  "./color.scss" as *;
+
+
+///1
+.content {
+    >{
+        .box{
+            padding: 15px;
+            > .title{
+                font-size: 18px;
+            }
+        }
+    }
+    .cat{
+        padding: 15px;
+    }
+    .premium:before {
+        content: "Premium Box";
+    }
+    &.premium:hover{
+        background-color: #eee;
+    }
+}
+// 2
+.class > {
+    padding: 10px;
+}
+
+.class {
+    > .child {
+        padding: 10px;
+    }
+}
+.class {
+    >  {
+        .child{
+            padding: 10px;
+        }
+    }
+}
+
+// 3
+.class {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/// 4 
+.parent {
+    & + .sibling {
+        margin: auto {
+        top: 10px;
+    }
+    & ~ .last {
+        padding: 10px;
+    }
+    }
+}
+
+/// 5 
+.widget  {
+    &, .my-class {
+        background-color: white;
+        padding: 20px;
+    }
+}
+
+.main-border {
+    & , .my-class{
+        border: 1px solid #CCC
+    }
+}
+.my-class {
+    font-weight: bold;
+    margin: 20px auto;
+}
+
+
+/// 6
+// The Code
+%widget {
+    background-color: white;
+    padding: 20px;
+}
+%main-border {
+    border: 1px solid #CCC
+}
+.my-class {
+    @extend %widget;
+}
+.my-class {
+    @extend %main-border ;
+}
+.my-class {
+    font-weight: bold;
+    margin: 20px auto;
+}
+
+/// 7 
+.box {
+    & h2, p{
+        font-size: 20px;
+    }
+}
+@media (max-width: 575px) {
+    .box h2, .box p {
+        font-size: 16px;
+    }
+}
+.box {
+    & h2 span, p{
+        font-weight: bold;
+    }
+}
+
+/// 8 
+.box a {
+    color: $red;
+    &:hover {
+        color: $green;
+    }
+}
+
+/// 9 
+// - Project_Folder
+// --- Helpers
+// ------ _vars.scss
+// ------ _functions.scss
+// --- Layout
+// ------ _header.scss
+// ------ _footer.scss
+
+// 10
+.box{
+    font-size: 20px;
+        &-holder{
+            width: 1000px;
+            &-content {
+                margin: auto;
+            }
+        }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+/// 7 => 10
+//7
+$main: "school";
+$child: "box";
+$language: "en"; // English  $language: "ar"; // Arabic
+$gap: 20px;
+
+@if $language == en {
+        .school {
+            padding: 20px;
+            direction: ltr;
+            margin-left: 20px;
+        }
+        .school .school-box {
+            padding: 10px;
+        }
+        .school:hover .school-box {
+            background-color: #eee;
+        }
+    } @else if $language == ar {
+        .school {
+            padding: 20px;
+            direction: rtl;
+            margin-right: 20px;
+        }
+        .school .school-box {
+            padding: 10px;
+        }
+        .school:hover .school-box {
+            background-color: #eee;
+        }
+}
+
+// SASS Code
+$main-color: red;
+$alt-color: blue;
+
+// Needed Output
+/* Theme Version: 1.0 */
+/* Website Theme Main Color Is: #{$main-color} */
+/*! Website Theme Alternate Color Is: #{$alt-color} !*/
+
+// SASS Code
+//$number: 10;
+//$number: 8;
+$number: 5;
+
+@if $number > 8 {
+    .class {
+        color: blue;
+    }
+}@else if $number > 5 {
+    .class {
+        color: green;
+    }
+}@else if $number  == 5 {
+    .class {
+        color: red;
+    }
+}
+
+@mixin arrow ($dierct){
+    content: "";
+    position: absolute;
+    border: 20px solid transparent;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -40px;
+    border-bottom-color: red;
+}
+
+.element {
+    &:before {
+        @include arrow("top");
+    }
+}
+
+.element {
+    &:before {
+        @include arrow("right");
+    }
+}
+
+.element {
+    &:before {
+        @include arrow("bottom");
+    }
+}
+
+.element {
+    &:before {
+        @include arrow("left");
+    }
+}
+
+$grid: 16;
+
+@for $i from 1 through $grid {
+    .col-#{$i} {
+        width: percentage($i / $grid );
+    }
+}
+$names:
+    "books" 20px red 18,
+    "games" 30px green 18,
+    "dvds" 20px blue;
+
+@mixin each {
+    border-bottom: 2px solid red;
+    color: #444;
+}
+
+@each $name, $size, $color, $font  in $names{
+    .#{$name}{
+        padding: $size;
+        @if $font == null {
+            font-size: 16px;
+        }@else{
+            font-size: $font;
+        }
+        @include each;
+    }
+}
+
+$init: 1;
+
+@while $init <= 5 {
+    .circle-#{$init * 100} {
+        width: #{$init * 100px};
+        height: #{$init * 100px};
+        border-radius: #{$init * 50px};;
+    }
+    $init: $init + 1;
+}
+;
+$init: 1;
+
+@for $i from 1 through 5 {
+    .circle-#{$i * 100} {
+        width: #{$i * 100px};
+        height: #{$i * 100px};
+        border-radius: #{$i * 50px};;
+    }
+}
+
+
+@mixin flex-center($width-page) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: $width-page;
+}
+
+$width : 10px;
+.box-one {
+    @include flex-center(400px);
+
+}
+.box-two {
+    @include flex-center(200px);
+}
+
+$num: 2;
+$start: 100;
+
+@function double($size) {
+  @return $size * $num;
+}
+
+@for $i from 1 through 5 {
+    .box-#{$i * 100} {
+        width: 100px;
+        height: double($start * $i);
+    }
+}
+
+
+@function get-total($num...) {
+    $total: 0;
+    @each $num in $num {
+        $total: $total + $num;
+    }
+    @return $total;
+}
+
+.box {
+    top: get-total(100, 50, 20);
+    right: get-total(100, 50);
+}
